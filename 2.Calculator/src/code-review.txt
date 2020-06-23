@@ -1,0 +1,31 @@
+HTML
+-   Nombres correctos
+    - Change viewer x result
+    - Change div x span in result
+    - Change / Delete ID: Only can be unique (a lot of id's btn). With class is OK
+    - Change data-ops equals
+CSS
+- Computed
+    - Use specific size (18px/1.6) 
+    - .calculator: tontento, 2 veces after
+JS
+- Correct names
+    -   theNum x currentName
+    -   warning (name BATMAN)
+        - old, current and result are numbers, not strings
+    - When its bad result, show ERROR not 'you broke it!' . Same for infinity result
+    - Click clear not get with class
+
+
+BUGS:
+    - Plus and minus are permuted
+    - 0 and 3 are permuted
+
+IMPLEMENTATIONS
+    - Mult and div
+    - Version is 1.3.0
+        (minor) new features not broke with past version
+        MAYOR / MINOR / FIX
+
+BONUS:
+    Keyboard numbers ok

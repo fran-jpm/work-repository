@@ -1,0 +1,239 @@
+<h2>Payvision Calculator</h2>
+
+<div id="calculator" class="calculator">
+  <button id="clear" class="clear">C</button>
+
+  <span id="result" class="result">0</span>
+
+  <button class="num" data-num="7">7</button>
+  <button class="num" data-num="8">8</button>
+  <button class="num" data-num="9">9</button>
+  <button data-ops="div" class="ops">/</button>
+
+
+  <button class="num" data-num="4">4</button>
+  <button class="num" data-num="5">5</button>
+  <button class="num" data-num="6">6</button>
+  <button data-ops="mult" class="ops">X</button>
+
+
+  <button class="num" data-num="1">1</button>
+  <button class="num" data-num="2">2</button>
+  <button class="num" data-num="3">3</button>
+  <button data-ops="minus" class="ops">-</button>
+
+  <button id="btn" class="num" data-num="0">0</button>
+  <button id="btn" class="num" data-num=".">.</button>
+  <button data-ops="equals" id="equals" class="equals">=</button>
+  <button data-ops="plus" class="ops">+</button>
+
+</div>
+
+<style>
+  body {
+    background-color: #343534;
+    font: 300 18px/1.6 "Source Sans Pro", sans-serif;
+    margin: 0;
+    padding: 5em 0 2em;
+    text-align: center;
+    color: rgb(200, 255, 225);
+  }
+
+  h2 {
+    font-weight: 300;
+    margin: 0;
+  }
+
+  .calculator {
+    font-size: 28px;
+    margin: 0 auto;
+    width: 10em;
+
+    &::before,
+    &::after {
+      content: " ";
+      display: table;
+    }
+
+    &::after {
+      clear: both;
+    }
+  }
+
+  .broken {
+    animation: broken 2s;
+    transform: translate3d(0, -2000px, 0);
+    opacity: 0;
+  }
+
+  .result {
+    float: left;
+    line-height: 3em;
+    text-align: right;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 7.5em;
+    height: 3em;
+  }
+
+  button {
+    border: 0;
+    background: #3f3ad7;
+    color: #ffffff;
+    cursor: pointer;
+    float: left;
+    font: inherit;
+    margin: 0.25em;
+    width: 2em;
+    height: 2em;
+    transition: all 0.5s;
+  }
+  button:hover{
+    border: 1px solid #ffffff;
+  }
+  .ops{
+    background-color: #70dc9b;
+  }
+  #equals{
+    background-color: #c670dc;
+  }
+  #clear{
+    background-color: #3f3ad7;
+  }
+</style>
+
+<script>
+  (function() {
+    // Shortcut to get elements
+    var el = function(element) {
+      if (element.charAt(0) === "#") {
+        return document.querySelector(element); // ... returns single element
+      }
+
+      return document.querySelectorAll(element); // Otherwise, returns a nodelist
+    };
+
+    // Variables
+    var result = el("#result"), // Calculator screen where result is displayed
+      equals = el("#equals"), // Equal button
+      nums = el(".num"), // List of numbers
+      ops = el(".ops"), // List of operators
+      currentNum = "", // Current number
+      oldNum = "", // last number
+      resultNum= "", // Result
+      operator; // Operator
+
+    // When: Number is clicked. Get the current number selected
+    var setNum = function() {
+      if (resultNum) {
+        // If a result was displayed, reset number
+        currentNum = this.getAttribute("data-num");
+        resultNum = "";
+      } else {
+        // Otherwise, add digit to previous number (this is a string!)
+        currentNum += this.getAttribute("data-num");
+      }
+
+      result.innerHTML = currentNum; // Display current number
+    };
+
+    // When: Operator is clicked. Pass number to oldNum and save operator
+    var moveNum = function() {
+      oldNum = currentNum;
+      currentNum = "";
+      operator = this.getAttribute("data-ops");
+
+      equals.setAttribute("data-result", ""); // Reset result in attr
+    };
+
+    // When: Equals is clicked. Calculate result
+    var displayNum = function() {
+      // Convert string input to numbers
+      oldNum = parseFloat(oldNum);
+      currentNum = parseFloat(currentNum);
+
+      // Perform operation
+      switch (operator) {
+        case "plus":
+          resultNum = oldNum + currentNum;
+          break;
+
+        case "minus":
+          resultNum = oldNum - currentNum;
+          break;
+
+        case "mult":
+          resultNum = oldNum * currentNum;
+          break;
+        
+        case "div":
+          resultNum = oldNum / currentNum;
+          break;
+
+        // If equal is pressed without an operator, keep number and continue
+        default:
+          resultNum = currentNum;
+      }
+
+      // If NaN or Infinity returned
+      if (!isFinite(resultNum)) {
+        if (isNaN(resultNum)) {
+          // If result is not a number; set off by, eg, double-clicking operators
+          resultNum = "Error";
+        } else {
+          // If result is infinity, set off by dividing by zero
+          resultNum = "Infinite";
+          el("#calculator").classList.add("broken"); // Break calculator
+        }
+      }
+
+      // Display result, finally!
+      result.innerHTML = resultNum;
+      equals.setAttribute("data-result", resultNum);
+
+      // Now reset oldNum & keep result
+      oldNum = 0;
+      currentNum = resultNum;
+    };
+
+    // When: Clear button is pressed. Clear everything
+    var clearAll = function() {
+      oldNum = "";
+      currentNum = "";
+      result.innerHTML = "0";
+      equals.setAttribute("data-result", resultNum);
+    };
+
+    /* The click events */
+
+    // Add click event to numbers
+    for (var i = 0, l = nums.length; i < l; i++) {
+      nums[i].onclick = setNum;
+    }
+
+    // Add click event to operators
+    for (var i = 0, l = ops.length; i < l; i++) {
+      ops[i].onclick = moveNum;
+    }
+
+    // Add click event to equal sign
+    equals.onclick = displayNum;
+
+    // Add click event to clear button
+    clear.onclick = clearAll;
+
+    //Add keyboard press number
+    document.addEventListener("keypress", logKey)
+    function logKey(e) {
+      if(e.code.includes("Digit")) {
+        if (resultNum && Number.isInteger(parseInt(e.key, 10))) {
+          currentNum = parseInt(e.key, 10);
+          resultNum = "";
+        } else {
+          currentNum += parseInt(e.key, 10);
+        }
+        result.innerHTML = currentNum;
+      }
+    }
+  })();
+</script>
