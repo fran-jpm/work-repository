@@ -1,0 +1,5 @@
+1-Do you miss any class?
+    -   I dont miss any class. I think it's better use Typescript, you work better with type in variables
+2- All functions completed and test OK
+3- Maybe in complete application, the money in the bank - transaction the total can't be negative
+4- Its a normal class, with definition, constructor and static and normal methods
