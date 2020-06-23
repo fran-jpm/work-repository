@@ -1,0 +1,31 @@
+----------------------------
+            TASK
+----------------------------
+1- All functions implemented
+2- I tried implement test, but i couldn't. I configured it, but not ran.
+3- Disabled x-powered-by for security, we dont want PHP. We do not want to show our vulnerable information 
+
+----------------------------
+            EXAMPLES
+----------------------------
+1- curl -i -X GET http://localhost:8080/api/players
+2- curl -i -X POST http://localhost:8080/api/players -d '{"name":"Andy", "age":20, "health": 100, "bag": [5]}' -H "Content-Type: application/json"
+3- curl -i -X GET http://localhost:8080/api/players/1
+4- curl -i -X PUT http://localhost:8080/api/players/arm/1 -d '{"bag": [5]}' -H "Content-Type: application/json"
+5- curl -i -X PUT http://localhost:8080/api/players/kill/1
+6- curl -i -X POST http://localhost:8080/api/objects -d '{"name":"Bottle", "value":-10}' -H "Content-Type: application/json"
+7- curl -i -X GET http://localhost:8080/api/objects/1
+8- curl -i -X PUT http://localhost:8080/api/objects/1 -d '{"value": -5}' -H "Content-Type: application/json"
+9- curl -i -X DELETE http://localhost:8080/api/objects/1
+
+----------------------------
+            POSTMAN
+----------------------------
+File postmanExamples.json is the exported collection.
+User: admin, password: supersecret
+Configure Basic Auth with encode password
+
+
+
+
+
